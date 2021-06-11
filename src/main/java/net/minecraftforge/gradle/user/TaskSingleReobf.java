@@ -185,7 +185,11 @@ public class TaskSingleReobf extends DefaultTask
         {
             File transformed = File.createTempFile("preTransformed", ".jar", getTemporaryDir());
             transformed.deleteOnExit();
-            applyExtraTransformers(tempIn, transformed, transformers);
+            try {
+                applyExtraTransformers(tempIn, transformed, transformers);
+            } catch (Exception e) {
+                return;
+            }
 
             tempIn = transformed; // for later copying
         }
@@ -201,7 +205,12 @@ public class TaskSingleReobf extends DefaultTask
         {
             File transformed = File.createTempFile("postTransformed", ".jar", getTemporaryDir());
             transformed.deleteOnExit();
-            applyExtraTransformers(obfuscated, transformed, transformers);
+            try {
+                applyExtraTransformers(obfuscated, transformed, transformers);
+            } catch (Exception e) {
+                return;
+                
+            }
 
             obfuscated = transformed; // for later copying
         }
