@@ -268,16 +268,18 @@ public class TaskSingleReobf extends DefaultTask
 
                 byte[] data = ByteStreams.toByteArray(in.getInputStream(e));
 
-                // correct source name
-                if (e.getName().endsWith(".class"))
-                {
-                    for (ReobfTransformer trans : transformers)
-                    {
-                        data = trans.transform(data);
+                try {
+                    // correct source name
+                    if (e.getName().endsWith(".class")) {
+                        for (ReobfTransformer trans : transformers) {
+                            data = trans.transform(data);
+                        }
                     }
-                }
 
-                out.write(data);
+                    out.write(data);
+                } catch (Exception ignored) {
+                    // Failed to transform, don't include the file
+                }
             }
         }
     }
